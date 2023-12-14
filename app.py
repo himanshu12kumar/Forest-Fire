@@ -24,17 +24,20 @@ def index():
 @app.route('/predict_datapoint', methods=['POST'])
 def predict_datapoint():
     if request.method == 'POST':
-        # Extract input data from the form
-        # Your input processing logic here
+        Temperature=float(request.form.get('Temperature'))
+        RH=float(request.form.get('RH'))
+        Ws=float(request.form.get('Ws'))
+        Rain=float(request.form.get('Rain'))
+        FFMC=float(request.form.get('FFMC'))
+        DMC=float(request.form.get('DMC'))
+        ISI=float(request.form.get('ISI'))
+        Classes=float(request.form.get('Classes'))
+        Region=float(request.form.get('Region'))
 
-        # Scale the input data using the standard scaler
-        new_data_scaled = standard_scaler.transform([[Temperature, RH, Ws, Rain, FFMC, DMC, ISI, Classes, Region]])
+        new_data_scaled=standard_scaler.transform([[Temperature,RH,Ws,Rain,FFMC,DMC,ISI,Classes,Region]])
+        result=ridge_model.predict(new_data_scaled)
 
-        # Predict using the ridge model
-        result = ridge_model.predict(new_data_scaled)
-
-        return render_template('index.html', result=result[0])
-
+        return render_template('index.html',result=result[0])
     else:
         return render_template('index.html')
 
